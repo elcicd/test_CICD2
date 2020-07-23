@@ -1,0 +1,15 @@
+- op: add
+  path: /objects/0/spec/template/spec/containers/0/env
+  value:
+    - name: password
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: test-sealed-secret
+    - name: topicname
+      valueFrom:
+        configMapKeyRef:
+          key: topicname
+          name: ${APP_NAME}-configmap
+    - name: cgroup
+      value: patch-test-dev-instance2

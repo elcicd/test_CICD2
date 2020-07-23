@@ -1,0 +1,62 @@
+{
+	"templates": [{
+			"appName": "test-cicd2",
+			"file": "dc-svc-template.yaml",
+			"patchFile": "patch.yml",
+			"params": {
+				"SVC_PORT": 8080,
+				"TOPIC_NAME": "test-cicd2-topic"
+			},
+			"dev": {
+				"patchFile": "dev/patch-dev.yml",
+				"params": {
+					"SVC_PORT": 8081
+				}
+			},
+			"qa": {},
+			"prod": {}
+		},
+		{
+			"appName": "ktest-cicd2-configmap",
+			"file": "configmap-template.yaml",
+			"params": {
+				"TOPIC_NAME": "default-topic"
+			},
+			"dev": {
+				"params": {
+					"TOPIC_NAME": "dev-topic"
+				}
+			},
+			"qa": {
+				"params": {
+					"TOPIC_NAME": "qa-topic"
+				}
+			},
+			"prod": {
+				"params": {
+					"TOPIC_NAME": "prod-topic"
+				}
+			}
+		},
+		{
+			"appName": "test-cicd2",
+			"file": "hpa-template.yaml",
+			"default": {},
+			"dev": {},
+			"qa": {
+				"params": {
+					"CPU_PERCENTAGE": 50,
+					"MAX_REPLICAS": 2,
+					"MIN_REPLICAS": 1
+				}
+			},
+			"prod": {
+				"params": {
+					"CPU_PERCENTAGE": 90,
+					"MAX_REPLICAS": 5,
+					"MIN_REPLICAS": 2
+				}
+			}
+		}
+	]
+}

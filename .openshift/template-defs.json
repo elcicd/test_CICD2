@@ -1,14 +1,15 @@
 {
 	"templates": [{
 			"appName": "test-cicd2",
+      "templateName": "dc-svc-template",
 			"file": "dc-svc-template.yaml",
-			"patchFile": "patch.yml",
+			"patchFile": "patches/kustomize.patch",
 			"params": {
 				"SVC_PORT": 8080,
 				"TOPIC_NAME": "test-cicd2-topic"
 			},
 			"dev": {
-				"patchFile": "dev/patch-dev.yml",
+				"patchFile": "dev/kustomize-dev.patch",
 				"params": {
 					"SVC_PORT": 8081
 				}

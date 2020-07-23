@@ -18,7 +18,7 @@
 			"prod": {}
 		},
 		{
-			"appName": "ktest-cicd2-configmap",
+			"appName": "ktest-cicd2",
 			"file": "configmap-template.yaml",
 			"params": {
 				"TOPIC_NAME": "default-topic"

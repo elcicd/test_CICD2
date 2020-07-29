@@ -13,7 +13,7 @@ objects:
     topicname: ${TOPIC_NAME}
     patchOverride: ${PATCH_OVERRIDE}
   metadata:
-    name: ${APP_NAME}-configmap
+    name: ${APP_NAME}
 ############################################
 parameters:
 - description: The name for the microservice

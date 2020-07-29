@@ -1,7 +1,7 @@
 {
 	"templates": [{
 			"appName": "test-cicd2",
-      "templateName": "dc-svc-template",
+			"templateName": "dc-svc-template",
 			"file": "dc-svc-template.yaml",
 			"patchFile": "kustomize.patch",
 			"params": {
@@ -18,7 +18,7 @@
 			"prod": {}
 		},
 		{
-			"appName": "test-cicd2",
+			"appName": "test-cicd2-configmap",
 			"file": "configmap-template.yaml",
 			"params": {
 				"TOPIC_NAME": "default-topic"

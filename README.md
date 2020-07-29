@@ -1,2 +1,2 @@
-# ktest_CICD2
+# test_CICD2
 Second test project for el-CICD

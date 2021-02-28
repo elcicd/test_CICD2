@@ -34,7 +34,7 @@ templates:
     qa:
       params:
         CPU_PERCENTAGE: 50
-        MAX_REPLICAS: 2
+        MAX_REPLICAS: 4
         MIN_REPLICAS: 1
     prod:
       params:

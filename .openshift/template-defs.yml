@@ -10,7 +10,8 @@ templates:
       patchFile: dev/kustomize-dev.patch
       params:
         SVC_PORT: 8081
-    qa: {}
+    qa:
+      REPLICAS: 3
     prod: {}
   - appName: test-cicd2-configmap
     file: configmap-template.yaml

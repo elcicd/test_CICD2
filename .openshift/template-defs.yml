@@ -11,7 +11,8 @@ templates:
       params:
         SVC_PORT: 8081
     qa:
-      REPLICAS: 3
+      params:
+        REPLICAS: 3
     prod: {}
   - appName: test-cicd2-configmap
     file: configmap-template.yaml

@@ -1,4 +1,4 @@
-FROM centos/python-36-centos7:20200609-ad559b7
+FROM registry.access.redhat.com/ubi8/python-38:latest
 
 USER root
 

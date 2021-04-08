@@ -12,6 +12,7 @@ objects:
     cgroup: cgroup
     topicname: ${TOPIC_NAME}
     patchOverride: ${PATCH_OVERRIDE}
+    demochange: ${DEMO_CHANGE}
   metadata:
     name: ${APP_NAME}
 ############################################
@@ -29,3 +30,8 @@ parameters:
   name: PATCH_OVERRIDE
   required: false
   value: "THE TEST WORKED!!!"
+
+- description: A tutorial change
+  name: DEMO_CHANGE
+  required: false
+  value: "THIS IS NOT THE CORRECT VALUE!!!"

@@ -8,7 +8,7 @@
 ## el-CICD documention to add them.
 ##
 ######################################################################
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 kind: Template
 labels:
   template: dc-svc-template
@@ -16,7 +16,7 @@ message: Deploying using templated resources
 metadata:
   name:  dc-svc-template
 objects:
-- apiVersion: v1
+- apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
 ######################################################################
 ##
@@ -27,14 +27,14 @@ objects:
   metadata:
     name: ${APP_NAME}
     labels:
-      microservice: ${MICROSERVICE_NAME}
       app: ${APP_NAME}
   spec:
     replicas: ${{REPLICAS}}
     selector:
+      projectid: ${PROJECT_ID}
       microservice: ${MICROSERVICE_NAME}
       app: ${APP_NAME}
-      deploymentconfig: ${APP_NAME}
+      build-number: build-${BUILD_NUMBER}
 ######################################################################
 ##
 ## Default strategy is "Rolling", per OKD standards.
@@ -45,9 +45,10 @@ objects:
     template:
       metadata:
         labels:
+          projectid: ${PROJECT_ID}
           microservice: ${MICROSERVICE_NAME}
           app: ${APP_NAME}
-          deploymentconfig: ${APP_NAME}
+          build-number: build-${BUILD_NUMBER}
       spec:
         containers:
           - name: ${APP_NAME}
@@ -57,7 +58,7 @@ objects:
 ##
 ######################################################################
             image: ${IMAGE_REPOSITORY}/${PROJECT_ID}-${MICROSERVICE_NAME}:${IMAGE_TAG}
-            imagePullPolicy: Always
+            imagePullPolicy: ${IMAGE_PULL_POLICY}
 ######################################################################
 ##
 ## Best practices say your deployments should define resource limits and requests,
@@ -79,9 +80,8 @@ objects:
 ## service port.  For strings, use a single set of curly braces { }.
 ##
 #############################################################################  
-            - containerPort: ${{SVC_PORT}}
-              protocol: TCP
-
+              - containerPort: ${{SVC_PORT}}
+                protocol: ${PORT_PROTOCOL}
 #############################################################################
 ##
 ## DO NOT EDIT OR REMOVE.  Doing so will break deployments.
@@ -105,21 +105,37 @@ objects:
     selector:
       app: ${APP_NAME}
     ports:
-      - protocol: TCP
-        port: ${{SVC_PORT}}
+      - port: ${{SVC_PORT}}
         targetPort: ${{SVC_PORT}}
+        protocol: ${PORT_PROTOCOL}
 
 parameters:
+- description: The build number
+  displayName: Build Number
+  name: BUILD_NUMBER
+  required: true
+
 - description: The image repository from where to fetch the image
   displayName: Image Repository
   name: IMAGE_REPOSITORY
+  required: true
+
+- description: The image pull policy
+  displayName: Image Pull Policy
+  name: IMAGE_PULL_POLICY
+  required: true
+  value: Always
+
+- description: The image repository pull secret
+  displayName: Image Repository Pull
+  name: PULL_SECRET
   required: true
 
 - description: The name for the microservice, derived by el-CICD from the name of the Git repository
   displayName: Microservice Name
   name: MICROSERVICE_NAME
   required: true
-  
+
 - description: The name for the app.  Set this value manually through the template-defs.json file for multiple deployments of the same image.
   displayName: Application Name
   name: APP_NAME
@@ -128,11 +144,6 @@ parameters:
 - description: The Project ID
   displayName: Project ID
   name: PROJECT_ID
-  required: true
-
-- description: The name of the environment the image is being deployed to.  Used to help define unique routes.
-  displayName: Environment Name
-  name: ENV
   required: true
 
 - description: Image Tag used to pull image from image repository
@@ -145,7 +156,7 @@ parameters:
   name: CPU_REQ
   required: true
   value: 100m
-  
+
 - description: Maximum CPU Resource Limit allowed; see OKD docs for more info
   displayName: CPU Resource Limit
   name: CPU_LIMIT
@@ -157,7 +168,7 @@ parameters:
   name: MEM_REQ
   required: true
   value: 50Mi
- 
+
 - description: Memory Resource Limit (Ceiling) in Mi or Gi; see OKD docs for more info
   displayName: Memory Resource Limit in Mi or Gi
   name: MEM_LIMIT
@@ -175,6 +186,12 @@ parameters:
   name: SVC_PORT
   required: true
   value: "8080"
+
+- description: Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP".
+  displayName: Service Port Protocol
+  name: PORT_PROTOCOL
+  required: true
+  value: TCP
 
 - description: Deployment strategy; see OKD docs for more info
   displayName: Deployment strategy

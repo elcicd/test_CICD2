@@ -1,0 +1,6 @@
+templateVars-dev:
+  CPU_UTILIZATION: 50
+
+templates-dev:
+  - templateName: deploySvc
+    port: 8081

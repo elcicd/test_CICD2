@@ -1,0 +1,37 @@
+templateVars:
+  CONFIGMAP: configMap
+  CPU_UTILIZATION: 50
+
+templates:
+- templateName: deploySvc
+  env:
+  - name: password
+    valueFrom:
+      secretKeyRef:
+        key: password
+        name: ${MICROSERVICE_NAME}-sealed-secret
+  - name: topicname
+    valueFrom:
+      configMapKeyRef:
+        key: topicname
+        name: ${MICROSERVICE_NAME}-${CONFIGMAP}
+  - name: cgroup
+    valueFrom:
+      configMapKeyRef:
+        key: cgroup
+        name: ${MICROSERVICE_NAME}-${CONFIGMAP}
+- templateName: cm
+  appName: ${MICROSERVICE_NAME}-${CONFIGMAP}
+  data:
+    topicname: ${SDLC_ENV}-topic
+- templateName: hpa
+  metrics:
+  - type: Resource
+    name: cpu
+    target:
+      type: Utilization
+      averageUtilization: ${CPU_UTILIZATION}
+  qa:
+    maxReplicas: 4
+  prod:
+    maxReplicas: 5

@@ -1,0 +1,6 @@
+templateVars-qa:
+  CPU_UTILIZATION: 90
+
+templates-qa:
+- templateName: deploySvc
+  replicas: 3

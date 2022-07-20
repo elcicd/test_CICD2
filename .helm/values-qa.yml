@@ -2,5 +2,5 @@ templateVars-qa:
   CPU_UTILIZATION: 90
 
 templates-qa:
-- templateName: deploySvc
+- templateName: deploymentService
   replicas: 3

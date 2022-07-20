@@ -3,7 +3,7 @@ templateVars:
   CPU_UTILIZATION: 50
 
 templates:
-- templateName: deploySvc
+- templateName: deploymentService
   env:
   - name: password
     valueFrom:
@@ -20,11 +20,11 @@ templates:
       configMapKeyRef:
         key: cgroup
         name: ${MICROSERVICE_NAME}-${CONFIGMAP}
-- templateName: cm
+- templateName: configMap
   appName: ${MICROSERVICE_NAME}-${CONFIGMAP}
   data:
     topicname: ${SDLC_ENV}-topic
-- templateName: hpa
+- templateName: horizontalPodAutoscaler
   metrics:
   - type: Resource
     name: cpu

@@ -1,5 +1,5 @@
 templateVars:
-  CONFIGMAP: configMap
+  CONFIGMAP: configmap
   CPU_UTILIZATION: 50
 
 templates:

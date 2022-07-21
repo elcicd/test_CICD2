@@ -1,9 +1,29 @@
 templateVars:
   CONFIGMAP: configmap
+  CPU_UTILIZATION: 90
+  REPLICAS: 1
+  MAX_REPLICAS: 3
+  PORT: 8080
+  CGROUP: cgroup
+  
+templateVars-dev:
   CPU_UTILIZATION: 50
+  PORT: 8081
+
+templateVars-qa:
+  MAX_REPLICAS: 4
+  REPLICAS: 3
+  
+templateVars-stg:
+  CPU_UTILIZATION: 50
+
+templateVars-prod:
+  MAX_REPLICAS: 5
 
 templates:
 - templateName: deploymentService
+  replicas: ${REPLICAS}
+  port: ${PORT}
   env:
   - name: password
     valueFrom:
@@ -15,23 +35,23 @@ templates:
       configMapKeyRef:
         key: topicname
         name: ${MICROSERVICE_NAME}-${CONFIGMAP}
-  - name: cgroup
+  - name: ${CGROUP}
     valueFrom:
       configMapKeyRef:
-        key: cgroup
+        key: ${CGROUP}
         name: ${MICROSERVICE_NAME}-${CONFIGMAP}
+
 - templateName: configMap
   appName: ${MICROSERVICE_NAME}-${CONFIGMAP}
   data:
+    ${CGROUP}: ${CGROUP}
     topicname: ${SDLC_ENV}-topic
+
 - templateName: horizontalPodAutoscaler
+  maxReplicas: ${MAX_REPLICAS}
   metrics:
   - type: Resource
     name: cpu
     target:
       type: Utilization
       averageUtilization: ${CPU_UTILIZATION}
-  qa:
-    maxReplicas: 4
-  prod:
-    maxReplicas: 5

@@ -1,6 +1,0 @@
-templateVars-dev:
-  CPU_UTILIZATION: 50
-
-templates-dev:
-  - templateName: deploymentService
-    port: 8081

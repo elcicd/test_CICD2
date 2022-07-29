@@ -1,57 +1,58 @@
-parameters:
-  CONFIGMAP: configmap
-  CPU_UTILIZATION: 90
-  REPLICAS: 1
-  MAX_REPLICAS: 3
-  PORT: 8080
-  CGROUP: cgroup
-  
-parameters-dev:
-  CPU_UTILIZATION: 50
-  PORT: 8081
+elCicdChart:
+  parameters:
+    CONFIGMAP: configmap
+    CPU_UTILIZATION: 90
+    REPLICAS: 1
+    MAX_REPLICAS: 3
+    PORT: 8080
+    CGROUP: cgroup
+    
+  parameters-dev:
+    CPU_UTILIZATION: 50
+    PORT: 8081
 
-parameters-qa:
-  MAX_REPLICAS: 4
-  REPLICAS: 3
-  
-parameters-stg:
-  CPU_UTILIZATION: 50
+  parameters-qa:
+    MAX_REPLICAS: 4
+    REPLICAS: 3
+    
+  parameters-stg:
+    CPU_UTILIZATION: 50
 
-parameters-prod:
-  MAX_REPLICAS: 5
+  parameters-prod:
+    MAX_REPLICAS: 5
 
-templates:
-- templateName: deploymentService
-  replicas: ${REPLICAS}
-  port: ${PORT}
-  env:
-  - name: password
-    valueFrom:
-      secretKeyRef:
-        key: password
-        name: ${MICROSERVICE_NAME}-sealed-secret
-  - name: topicname
-    valueFrom:
-      configMapKeyRef:
-        key: topicname
-        name: ${MICROSERVICE_NAME}-${CONFIGMAP}
-  - name: ${CGROUP}
-    valueFrom:
-      configMapKeyRef:
-        key: ${CGROUP}
-        name: ${MICROSERVICE_NAME}-${CONFIGMAP}
+  templates:
+  - templateName: deploymentService
+    replicas: ${REPLICAS}
+    port: ${PORT}
+    env:
+    - name: password
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: ${MICROSERVICE_NAME}-sealed-secret
+    - name: topicname
+      valueFrom:
+        configMapKeyRef:
+          key: topicname
+          name: ${MICROSERVICE_NAME}-${CONFIGMAP}
+    - name: ${CGROUP}
+      valueFrom:
+        configMapKeyRef:
+          key: ${CGROUP}
+          name: ${MICROSERVICE_NAME}-${CONFIGMAP}
 
-- templateName: configMap
-  appName: ${MICROSERVICE_NAME}-${CONFIGMAP}
-  data:
-    ${CGROUP}: ${CGROUP}
-    topicname: ${SDLC_ENV}-topic
+  - templateName: configMap
+    appName: ${MICROSERVICE_NAME}-${CONFIGMAP}
+    data:
+      ${CGROUP}: ${CGROUP}
+      topicname: ${SDLC_ENV}-topic
 
-- templateName: horizontalPodAutoscaler
-  maxReplicas: ${MAX_REPLICAS}
-  metrics:
-  - type: Resource
-    name: cpu
-    target:
-      type: Utilization
-      averageUtilization: ${CPU_UTILIZATION}
+  - templateName: horizontalPodAutoscaler
+    maxReplicas: ${MAX_REPLICAS}
+    metrics:
+    - type: Resource
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: ${CPU_UTILIZATION}

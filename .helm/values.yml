@@ -1,5 +1,5 @@
 elCicdChart:
-  parameters:
+  elcicdDefs:
     CONFIGMAP: configmap
     CPU_UTILIZATION: 90
     REPLICAS: 1
@@ -7,18 +7,18 @@ elCicdChart:
     PORT: 8080
     CGROUP: cgroup
     
-  parameters-dev:
+  elcicdDefs-dev:
     CPU_UTILIZATION: 50
     PORT: 8081
 
-  parameters-qa:
+  elcicdDefs-qa:
     MAX_REPLICAS: 4
     REPLICAS: 3
     
-  parameters-stg:
+  elcicdDefs-stg:
     CPU_UTILIZATION: 50
 
-  parameters-prod:
+  elcicdDefs-prod:
     MAX_REPLICAS: 5
 
   templates:

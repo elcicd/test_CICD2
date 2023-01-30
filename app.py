@@ -1,5 +1,3 @@
-import json
-from datetime import datetime
 import os
 import logging
 import time
@@ -12,10 +10,6 @@ class x():
         print("Testing")
 
 def main():
-    """
-
-    """
-
     logging.basicConfig(
         level=logging.os.environ.get('loglevel'),
         format="%(asctime)s:%(levelname)s:%(message)s"

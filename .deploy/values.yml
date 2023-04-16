@@ -42,7 +42,7 @@ elCicdTemplates:
         name: ${COMPONENT_NAME}-${CONFIGMAP}
 
 - templateName: configMap
-  appName: ${COMPONENT_NAME}-${CONFIGMAP}
+  objName: ${COMPONENT_NAME}-${CONFIGMAP}
   data:
     ${CGROUP}: ${CGROUP}
     topicname: ${SDLC_ENV}-topic

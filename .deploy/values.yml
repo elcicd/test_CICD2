@@ -22,36 +22,36 @@ elCicdDefs-prod:
 
 elCicdTemplates:
 - templateName: deploymentService
-  replicas: ${REPLICAS}
-  port: ${PORT}
+  replicas: $<REPLICAS>
+  port: $<PORT>
   env:
   - name: password
     valueFrom:
       secretKeyRef:
         key: password
-        name: ${COMPONENT_NAME}-sealed-secret
+        name: $<COMPONENT_NAME>-sealed-secret
   - name: topicname
     valueFrom:
       configMapKeyRef:
         key: topicname
-        name: ${COMPONENT_NAME}-${CONFIGMAP}
-  - name: ${CGROUP}
+        name: $<COMPONENT_NAME>-$<CONFIGMAP>
+  - name: $<CGROUP>
     valueFrom:
       configMapKeyRef:
-        key: ${CGROUP}
-        name: ${COMPONENT_NAME}-${CONFIGMAP}
+        key: $<CGROUP>
+        name: $<COMPONENT_NAME>-$<CONFIGMAP>
 
 - templateName: configMap
-  objName: ${COMPONENT_NAME}-${CONFIGMAP}
+  objName: $<COMPONENT_NAME>-$<CONFIGMAP>
   data:
-    ${CGROUP}: ${CGROUP}
-    topicname: ${SDLC_ENV}-topic
+    $<CGROUP>: $<CGROUP>
+    topicname: $<SDLC_ENV>-topic
 
 - templateName: horizontalPodAutoscaler
-  maxReplicas: ${MAX_REPLICAS}
+  maxReplicas: $<MAX_REPLICAS>
   metrics:
   - type: resource
     name: cpu
     target:
       type: Utilization
-      averageUtilization: ${CPU_UTILIZATION}
+      averageUtilization: $<CPU_UTILIZATION>
